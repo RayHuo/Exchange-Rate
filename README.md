@@ -14,15 +14,15 @@ Android App for exchange rate
 String origin = "http://www.baidu.com/s?wd=";
 String urlStr = URLEncoder.encode("320 港元 日元" ,"UTF-8");
 String address = origin + urlStr;
-
+<br />
 URL url=new URL(address);
 InputStreamReader isr = new InputStreamReader(url.openStream(), "UTF-8");
 BufferedReader br = new BufferedReader(isr);
-
+<br />
 String str = null;
 while((str=br.readLine()) != null) {
-  // ...
-}
+<br/>  // ...
+<br/>}
 </code></pre>
 
 3. 先从网页上把当前所有流通币种的名称抓取下来，保存在app的数据库中，这个做一次存好就行了。
