@@ -9,4 +9,6 @@ Android App for exchange rate
 
 2. java调用python或者java直接网络爬虫。
 
+直接使用java，当前android中运行python比较麻烦，使用kivy等外部库会导致APP的size非常大，当前没有找到较为完美的解决方案，所以直接java爬虫好了。
+
 3. 先从网页上把当前所有流通币种的名称抓取下来，保存在app的数据库中，这个做一次存好就行了。
