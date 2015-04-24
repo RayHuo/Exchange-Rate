@@ -1,6 +1,7 @@
 package com.ray.exchangerate;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,7 +17,9 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -127,46 +130,61 @@ public class Start extends Activity {
 							+ " " + exchangeSelectedType ,"UTF-8");
 					String realURL = baiduURL + urlParameters;
 //					System.out.println(realURL);
-					Toast.makeText(Start.this, realURL, Toast.LENGTH_SHORT).show();
+//					Toast.makeText(Start.this, realURL, Toast.LENGTH_SHORT).show();
 					// 通过URL对象的openStream获取得到整个网页信息，然后查找相应的汇率数值。
 					URL m_url=new URL(realURL);
 					InputStreamReader isr = new InputStreamReader(m_url.openStream(), "UTF-8");
 					BufferedReader br = new BufferedReader(isr);
 					
-//					OutputStreamWriter write = new OutputStreamWriter(new FileOutputStream("OutputFiles.txt"), "gbk"); 
-//					BufferedWriter out = new BufferedWriter(write);
+
+					/*
+					 * 创建文件，把获取得到的html文件写到SD卡中。
+					 * */
+					BufferedWriter bw = null;
+					String sdpath = null;	// 存放SD卡根目录
+					// 判断是否存在SD卡
+					if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+						sdpath = Environment.getExternalStorageDirectory().getAbsolutePath();
+						File file = new File(Environment.getExternalStorageDirectory(), "OutputFiles.txt");
+						if(!file.exists()) {
+							file.createNewFile();
+						}
+						bw = new BufferedWriter(new FileWriter(file));
+						
+					}
 
 					
-//					String hit1 = accountValue + originSelectedType + "="; // "320港元=";
-					String hit1 = "<div>" + accountValue;
-					Toast.makeText(Start.this, "hit1 = " + hit1, Toast.LENGTH_SHORT).show();
-					String hit2 = exchangeSelectedType; // "日元";
-					Toast.makeText(Start.this, "hit2 = " + hit2, Toast.LENGTH_SHORT).show();
+//					String hit1 = accountValue + originSelectedType + "="; // "<em>5569人民币</em>元=";
+					String hit1 = "<em>" + accountValue + originSelectedType;	// "</em>元=";
+//					Toast.makeText(Start.this, "hit1 = " + hit1, Toast.LENGTH_SHORT).show();
+					String hit2 = "<em>"; // "日元";
+//					Toast.makeText(Start.this, "hit2 = " + hit2, Toast.LENGTH_SHORT).show();
 					String result = "";		// 汇率结果
 					int startSite = -1;
 					int endSite = -1;
 					String str = null;
-					int numb = 1;
 					while((str=br.readLine()) != null) {
-//						out.write(str);
-//						out.newLine();
-						Toast.makeText(Start.this, numb + " " + str, Toast.LENGTH_LONG).show();
-						if((startSite = str.indexOf(hit1)) > 0) {
-							Toast.makeText(Start.this, "hit!!!", Toast.LENGTH_SHORT).show();
-//							Toast.makeText(Start.this, startSite, Toast.LENGTH_SHORT).show();
-							endSite = str.indexOf(hit2, startSite);
-//							Toast.makeText(Start.this, endSite, Toast.LENGTH_SHORT).show();
-							result += str.substring(startSite+hit1.length(), endSite);
+						bw.write(str);
+						bw.flush(); 
+//						Toast.makeText(Start.this, str, Toast.LENGTH_SHORT).show();
+						
+						if((startSite = str.indexOf(hit1)) >= 0) {
+//							Toast.makeText(Start.this, "startSite=" + startSite, Toast.LENGTH_SHORT).show();
+							int startSite2 = str.indexOf("=", startSite+1);
+							endSite = str.indexOf(hit2, startSite2+1);
+//							Toast.makeText(Start.this, "endSite=" + endSite, Toast.LENGTH_SHORT).show();
+							result += str.substring(startSite2+1, endSite);
+							
 						}
-						numb++;
+//						numb++;
 					}
-//					out.close();
+					bw.close();
 					br.close();
 					isr.close();
 					
 					// 把结果赋值给exchangeAccount
-					exchangeAccount.setText("9999");
-					Toast.makeText(Start.this, result, Toast.LENGTH_SHORT).show();
+					exchangeAccount.setText(result);
+//					Toast.makeText(Start.this, result, Toast.LENGTH_SHORT).show();
 					
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
