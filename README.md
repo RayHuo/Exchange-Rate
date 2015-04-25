@@ -25,4 +25,11 @@ while((str=br.readLine()) != null) {
 <br/>}
 </code></pre>
 
+<br /> 对于访问网络获取数据：
+android 2.3之后都不允许在UI主线程执行较为耗时的操作，可以在onCreate函数的最开始加入`StrictMode`以允许在UI主线程进行网络访问。然而对于较为费时的操作，这样容易造成“假死”现象，即UI卡主了。故访问网络获取数据这样的操作应该另开子线程进行。本例使用Handler和Thread完成。其中：
+<br/>Handler默认绑定UI主线程，故重写其handlerMessage方法可以更新UI。
+<br/>Thread开一个新的子线程，其中的run方法执行网络访问，并通过调用handler的sendMessage方法，把得到的信息发送到UI主线程的messageQueue中，以待handler操作。
+<br/>handlerThread类是一个包含了looper的Thread子类，也可以使用它来完成。
+
 3. 先从网页上把当前所有流通币种的名称抓取下来，保存在app的数据库中，这个做一次存好就行了。
+
