@@ -1,5 +1,4 @@
 # Exchange-Rate
-Android App for exchange rate
 
 ## 功能
 输入数额，选择两种币种，然后给出数额转换成第二种币种的金额。
