@@ -36,3 +36,9 @@ android 2.3之后都不允许在UI主线程执行较为耗时的操作，可以�
 * Handler默认绑定UI主线程，故重写其handlerMessage方法可以更新UI。
 * Thread开一个新的子线程，其中的run方法执行网络访问，并通过调用handler的sendMessage方法，把得到的信息发送到UI主线程的messageQueue中，以待handler操作。
 * handlerThread类是一个包含了looper的Thread子类，也可以使用它来完成。
+
+
+## 未实现功能
+* 如果输入的两种币种一样，则直接输出原来输入的金额，不进行网络访问操作；
+* 从网上抓取当前各种流通的币种名称，update到spinner的adapter中；
+* 寻找不用整个网页抓取下来（这个会比较慢），只获取需要的金额信息的方法。
