@@ -128,7 +128,15 @@ public class Start extends Activity {
 				// TODO Auto-generated method stub
 				// 调用以下两个函数中的任何一个均可达到效果。
 //				getExchangeAccount();
-				getExchangeAccountWithThread();
+				String originSelectedType = originType.getSelectedItem().toString();
+				String exchangeSelectedType = exchangeType.getSelectedItem().toString();
+				String accountValue = account.getText().toString();
+				if(originSelectedType.equals(exchangeSelectedType)) {
+					exchangeAccount.setText(accountValue);
+				}
+				else {
+					getExchangeAccountWithThread();
+				}
 			}
 			
 		});	
