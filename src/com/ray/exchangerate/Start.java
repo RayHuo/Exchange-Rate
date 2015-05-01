@@ -134,6 +134,13 @@ public class Start extends Activity {
 				String originSelectedType = originType.getSelectedItem().toString();
 				String exchangeSelectedType = exchangeType.getSelectedItem().toString();
 				String accountValue = account.getText().toString();
+				
+				// 提醒当前输入为空，判断字符串是否等于另一个，请用equals函数判断，不要直接“==”判断
+				if(accountValue == null || accountValue.equals("")) {
+					Toast.makeText(Start.this, "请输入转换金额", Toast.LENGTH_LONG).show();
+					return;
+				}
+				
 				if(originSelectedType.equals(exchangeSelectedType)) {
 					exchangeAccount.setText(accountValue);
 				}
