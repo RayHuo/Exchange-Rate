@@ -9,6 +9,7 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.app.Activity;
 import android.content.Intent;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -73,6 +74,8 @@ public class Start extends Activity {
 		exchangeType = (Spinner)findViewById(R.id.exchangeType);
 		submit = (Button)findViewById(R.id.submit);
 		
+		// 禁止exchangeAccount这个EditText被输入，其实这里是禁止了调用键盘
+		exchangeAccount.setInputType(InputType.TYPE_NULL);
 		
 		spinner_adapter = new ArrayAdapter<String>(this, 
 				android.R.layout.simple_spinner_item, money_kind);
