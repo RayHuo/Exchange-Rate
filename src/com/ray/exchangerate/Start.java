@@ -264,6 +264,7 @@ public class Start extends Activity {
 		
 		// 新建一个thread，这里开个子线程，执行访问网络数据的行为，然后把数据给到一个message对象，并通过handler的sendMessage把
 		// 信息传递给handler绑定的UI主线程中的messageQueue，然后使用这个信息，并修改UI。
+		// ！！！不要在Thread里边进行Toast行为，因为这样也是一个更新UI主线程的行为，这是被禁止的。
 		m_thread = new Thread(new Runnable() {
 			public void run() {
 				// 获取输入的数额
